@@ -1,0 +1,39 @@
+name: rode-env
+author: rode@liatrio.com
+description: A test environment with Rode and its dependencies
+branding:
+  icon: anchor
+  color: green
+
+inputs:
+  rodeVersion:
+    description: Rode version
+    required: true
+    default: "0.14"
+  elasticsearchVersion:
+    description: Rode version
+    required: true
+    default: "7.10.0"
+  grafeasVersion:
+    description: Rode version
+    required: true
+    default: "0.8"
+  opaVersion:
+    description: Rode version
+    required: true
+    default: "0.24.0"
+
+outputs:
+  rodeHost:
+    description: Rode Host
+  elasticsearchUrl:
+    description: Rode Host
+  grafeasElasticsearchHost:
+    description: Rode Host
+  opaUrl:
+    description: Rode Host
+
+runs:
+  using: node12
+  main: dist/index.js
+  post: dist/index.js

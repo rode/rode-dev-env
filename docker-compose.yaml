@@ -1,0 +1,61 @@
+version: '3'
+services:
+  opa:
+    image: openpolicyagent/opa:${OPA_VERSION:-0.24.0}-debug
+    command: run --server
+    ports:
+      - 8181:8181
+    healthcheck:
+      test: [ "CMD", "wget", "-O-", "http://localhost:8181/health" ]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION:-7.10.0}
+    ports:
+      - 9200:9200
+    environment:
+      - 'discovery.type=single-node'
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:9200/_cluster/health" ]
+      interval: 10s
+      timeout: 1m
+      retries: 3
+  grafeas:
+    image: ghcr.io/rode/grafeas-elasticsearch:${GRAFEAS_VERSION:-latest}
+    command: "--config /etc/grafeas/config.yaml"
+    volumes:
+      - ./grafeas/config.yaml:/etc/grafeas/config.yaml:ro
+    ports:
+      - 8080:8080
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "-O-", "http://localhost:8080/v1beta1/projects" ] # no dedicated health endpoint
+      interval: 10s
+      timeout: 30s
+      start_period: 15s
+      retries: 3
+  rode:
+    image: ghcr.io/rode/rode:${RODE_VERSION:-latest}
+    command: --grafeas-host=grafeas:8080 --elasticsearch-host=http://elasticsearch:9200 --opa-host=http://opa:8181
+    depends_on:
+      grafeas:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      opa:
+        condition: service_healthy
+    ports:
+      - 50051:50051
+    healthcheck:
+      test: [ "CMD", "/grpc_health_probe", "-addr=:50051" ]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+      start_period: 15s
+networks:
+  default:
+    name: rode

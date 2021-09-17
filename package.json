@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@actions/artifact": "^0.5.2",
+    "@actions/core": "^1.5.0"
+  },
+  "name": "rode-env-action",
+  "version": "1.0.0",
+  "description": "A GitHub Action to facilitate testing Rode",
+  "main": "src/index.js",
+  "private": true,
+  "type": "module"
+}

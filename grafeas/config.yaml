@@ -1,0 +1,11 @@
+grafeas:
+  api:
+    address: "0.0.0.0:8080"
+    cafile:
+    keyfile:
+    certfile:
+    cors_allowed_origins:
+  storage_type: elasticsearch
+  elasticsearch:
+    url: "http://elasticsearch:9200"
+    refresh: "true"
