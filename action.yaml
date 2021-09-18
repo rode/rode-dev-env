@@ -1,4 +1,4 @@
-name: rode-env
+name: rode-dev-env
 author: rode@liatrio.com
 description: A test environment for Rode and its components
 branding:
@@ -22,18 +22,33 @@ inputs:
     description: 'Open Policy Agent Docker image tag.'
     required: true
     default: "0.24.0"
+  stage:
+    description: "One of either main or post"
+    required: true
+    default: "main"
 
 outputs:
   rodeHost:
     description: 'Rode hostname and port. No protocol.'
+    value: ${{ steps.outputs.rode-dev-env.rodeHost }}
   elasticsearchUrl:
     description: 'Elasticsearch URL.'
+    value: ${{ steps.outputs.rode-dev-env.elasticsearchUrl }}
   grafeasElasticsearchHost:
     description: 'Grafeas Elasticsearch host and port. No protocol.'
+    value: ${{ steps.outputs.rode-dev-env.grafeasElasticsearchHost }}
   opaUrl:
     description: 'Open Policy Agent URL.'
+    value: ${{ steps.outputs.rode-dev-env.opaUrl }}
 
 runs:
-  using: node12
-  main: dist/index.js
-  post: dist/index.js
+  using: composite
+  steps:
+    - run: node ${{ github.action_path }}/dist/index.js
+      shell: bash
+      env:
+        INPUT_RODEVERSION: ${{ inputs.rodeVersion }}
+        INPUT_ELASTICSEARCHVERSION: ${{ inputs.elasticsearchVersion }}
+        INPUT_GRAFEASVERSION: ${{ inputs.grafeasVersion }}
+        INPUT_OPAVERSION: ${{ inputs.opaVersion }}
+        INPUT_STAGE: ${{ inputs.stage }}

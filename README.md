@@ -49,8 +49,9 @@ The action outputs addresses for the running services:
 - name: List Rode Policies
   run: |
     curl http://${{ steps.rode.outputs.rodeHost }}/v1alpha1/policies | jq
+- name: Stop Rode Environment
+  if: always()
+  uses: rode/rode-dev-env@v0.1.0
+  with:
+   stage: 'post'
 ```
-
-### Debugging
-
-The action adds logs for each service as an attachment to the job. 

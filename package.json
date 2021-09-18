@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@actions/artifact": "^0.5.2",
     "@actions/core": "^1.5.0",
     "esbuild": "^0.12.28"
   },

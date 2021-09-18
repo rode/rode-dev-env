@@ -1,4 +1,5 @@
 const core = require("@actions/core");
+const path = require('path');
 const {execFileSync} = require('child_process');
 
 const up = (services) =>
@@ -17,10 +18,9 @@ const ps = () => runDockerCmd({
     cmd: 'ps',
 });
 
-const logs = (service) => runDockerCmd({
+const logs = () => runDockerCmd({
     cmd: 'logs',
-    log: false,
-    args: ['--no-color', '--no-log-prefix', service]
+    args: ['--no-color', '--no-log-prefix']
 });
 
 const composeEnvironment = () => ({
@@ -36,7 +36,14 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
     const opts = {
         shell: false,
     };
-    const execArgs = [cmd, ...args]
+    const execArgs = []
+    const githubActionPath = process.env.GITHUB_ACTION_PATH;
+    if (githubActionPath) {
+        core.info(`Running from ${githubActionPath}`);
+        execArgs.push('-f', path.join(githubActionPath, 'docker-compose.yaml'))
+    }
+
+    execArgs.push(cmd, ...args);
 
     if (extraEnv) {
         opts.env = {
@@ -47,10 +54,7 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
 
     try {
         const stdout = execFileSync('docker-compose', execArgs, opts);
-        if (log) {
-            core.info(stdout);
-        }
-        return stdout;
+        core.info(stdout);
     } finally {
         core.endGroup();
     }
