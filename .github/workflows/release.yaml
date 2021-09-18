@@ -30,4 +30,4 @@ jobs:
 
           version="v$(jq -r '.version' < package.json)"
           git tag -a "${version}" -m "Release ${version}"
-          git push
+          git push --follow-tags
