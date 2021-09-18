@@ -39,7 +39,7 @@ The action outputs addresses for the running services:
 
 ```yaml
 - name: Start Rode Environment
-  uses: rode/rode-dev-env
+  uses: rode/rode-dev-env@v0.1.0
   id: rode
   with:
     opaVersion: 0.24.0

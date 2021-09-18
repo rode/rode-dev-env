@@ -25,9 +25,10 @@ jobs:
           git config --local user.email "rode@liatrio.com"
           git config --local user.name "rode-bot"
 
-          git add dist/index.js
-          git commit -m "Update action dist"
-
           version="v$(jq -r '.version' < package.json)"
-          git tag -a "${version}" -m "Release ${version}"
+          commitMsg="Release ${version}"
+          git add dist/index.js
+          git commit -m "$commitMsg"
+
+          git tag -a "${version}" -m "$commitMsg"
           git push --follow-tags

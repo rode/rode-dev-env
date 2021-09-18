@@ -7,7 +7,7 @@ branding:
 
 inputs:
   rodeVersion:
-    description: 'Rode version. Set this value to 'local' to skip initializing Rode.'
+    description: "Rode version. Set this value to 'local' to skip initializing Rode."
     required: true
     default: "0.14"
   elasticsearchVersion:
