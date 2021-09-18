@@ -1,12 +1,14 @@
-import * as fs from 'fs';
-import os from 'os';
-import path from 'path';
-import * as artifact from '@actions/artifact';
-import * as core from "@actions/core";
-import * as dockerCompose from './docker-compose.js';
-import {getServices} from "./services.js";
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
-export default async () => {
+const artifact = require('@actions/artifact');
+const core = require('@actions/core');
+
+const dockerCompose = require('./docker-compose');
+const {getServices} = require('./services.js');
+
+module.exports = async () => {
     core.info('Running rode-dev-env post');
     const services = getServices();
 

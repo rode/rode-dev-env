@@ -1,7 +1,6 @@
-import * as core from "@actions/core";
-
-import main from './main.js';
-import post from './post.js';
+const core = require("@actions/core");
+const main = require('./main');
+const post = require('./post');
 
 const isPostAction = () => {
     const isPost = core.getState('post');

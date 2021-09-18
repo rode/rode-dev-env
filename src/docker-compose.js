@@ -1,23 +1,23 @@
-import * as core from "@actions/core";
-import {execFileSync} from 'child_process';
+const core = require("@actions/core");
+const {execFileSync} = require('child_process');
 
-export const up = (services) =>
+const up = (services) =>
     runDockerCmd({
         cmd: 'up',
         args: ['--detach', ...services],
         extraEnv: composeEnvironment()
     });
 
-export const down = () => runDockerCmd({
+const down = () => runDockerCmd({
     cmd: 'down',
     extraEnv: composeEnvironment(),
 })
 
-export const ps = () => runDockerCmd({
+const ps = () => runDockerCmd({
     cmd: 'ps',
 });
 
-export const logs = (service) => runDockerCmd({
+const logs = (service) => runDockerCmd({
     cmd: 'logs',
     log: false,
     args: ['--no-color', '--no-log-prefix', service]
@@ -55,3 +55,10 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
         core.endGroup();
     }
 };
+
+module.exports = {
+    up,
+    down,
+    ps,
+    logs
+}

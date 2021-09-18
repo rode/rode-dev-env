@@ -1,6 +1,6 @@
-import * as core from "@actions/core";
-import * as dockerCompose from './docker-compose.js';
-import {getServices} from "./services.js";
+const core = require('@actions/core');
+const dockerCompose = require('./docker-compose');
+const {getServices} = require('./services.js');
 
 const outputs = {
     'rodeHost': 'localhost:50051',
@@ -17,7 +17,7 @@ const setOutputs = () => {
         });
 };
 
-export default () => {
+module.exports = () => {
     core.info('Running rode-dev-env main');
     const services = getServices();
 

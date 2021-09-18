@@ -1,4 +1,4 @@
-import * as core from "@actions/core";
+const core = require('@actions/core');
 
 const defaultServices = [
     'grafeas',
@@ -6,11 +6,15 @@ const defaultServices = [
     'opa'
 ]
 
-export const getServices = () => {
+const getServices = () => {
     const services = [...defaultServices];
     if (core.getInput('rodeVersion') !== 'local') {
         services.push('rode');
     }
 
     return services;
+};
+
+module.exports = {
+    getServices,
 }
