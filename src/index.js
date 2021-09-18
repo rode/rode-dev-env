@@ -14,8 +14,7 @@ const isPostAction = () => {
 
 (async () => {
     try {
-        // const action = isPostAction() ? post : main;
-        const action = post
+        const action = isPostAction() ? post : main;
         await action();
     } catch (error) {
         core.setFailed(`Error running rode-dev-env: ${error.stack}`);

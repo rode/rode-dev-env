@@ -1,6 +1,6 @@
 # rode-dev-env
 
-A local development and CI environment for Rode and its collectors.  
+A local development and CI environment for Rode and its components.  
 
 ## Local
 
