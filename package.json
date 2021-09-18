@@ -1,12 +1,17 @@
 {
   "dependencies": {
     "@actions/artifact": "^0.5.2",
-    "@actions/core": "^1.5.0"
+    "@actions/core": "^1.5.0",
+    "esbuild": "^0.12.28"
   },
   "name": "rode-env-action",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A GitHub Action to facilitate testing Rode",
   "main": "src/index.js",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "build": "esbuild ./src --minify --bundle --outfile=dist/index.js --platform=node --target=node12",
+    "clean": "rm -f dist/index.js"
+  }
 }
