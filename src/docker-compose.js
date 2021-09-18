@@ -31,12 +31,12 @@ const composeEnvironment = () => ({
 })
 
 const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
-    core.startGroup(`docker compose ${cmd}`);
+    core.startGroup(`docker-compose ${cmd}`);
 
     const opts = {
         shell: false,
     };
-    const execArgs = ['compose', cmd, ...args]
+    const execArgs = [cmd, ...args]
 
     if (extraEnv) {
         opts.env = {
@@ -46,7 +46,7 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
     }
 
     try {
-        const stdout = execFileSync('docker', execArgs, opts);
+        const stdout = execFileSync('docker-compose', execArgs, opts);
         if (log) {
             core.info(stdout);
         }
