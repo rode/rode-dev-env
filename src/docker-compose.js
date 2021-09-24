@@ -1,6 +1,11 @@
 const core = require("@actions/core");
-const path = require('path');
 const {execFileSync} = require('child_process');
+
+let DOCKERFILE_PATH;
+
+const configure = (dockerfile) => {
+    DOCKERFILE_PATH = dockerfile;
+};
 
 const up = (services) =>
     runDockerCmd({
@@ -36,11 +41,9 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
     const opts = {
         shell: false,
     };
-    const execArgs = []
-    const githubActionPath = process.env.GITHUB_ACTION_PATH;
-    if (githubActionPath) {
-        core.info(`Running from ${githubActionPath}`);
-        execArgs.push('-f', path.join(githubActionPath, 'docker-compose.yaml'))
+    const execArgs = [];
+    if (DOCKERFILE_PATH) {
+        execArgs.push('-f', DOCKERFILE_PATH);
     }
 
     execArgs.push(cmd, ...args);
@@ -61,6 +64,7 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
 };
 
 module.exports = {
+    configure,
     up,
     down,
     ps,

@@ -10,7 +10,8 @@ To shut everything down, use `docker compose down`.
 
 ## GitHub Action
 
-To run Rode in a CI environment
+This repository includes a GitHub Action to run Rode in a CI environment. It handles setting up Rode and its dependencies,
+and will automatically tear it down in a post step. 
 
 ### Inputs
 
@@ -39,19 +40,9 @@ The action outputs addresses for the running services:
 
 ```yaml
 - name: Start Rode Environment
-  uses: rode/rode-dev-env@v0.1.0
+  uses: rode/rode-dev-env@v0.1.1
   id: rode
-  with:
-    opaVersion: 0.24.0
-    elasticsearchVersion: 7.10.0
-    grafeasVersion: 0.8.7
-    rodeVersion: 0.14.9
 - name: List Rode Policies
   run: |
     curl http://${{ steps.rode.outputs.rodeHost }}/v1alpha1/policies | jq
-- name: Stop Rode Environment
-  if: always()
-  uses: rode/rode-dev-env@v0.1.0
-  with:
-   stage: 'post'
 ```

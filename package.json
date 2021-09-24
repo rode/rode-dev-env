@@ -4,12 +4,8 @@
     "esbuild": "^0.12.28"
   },
   "name": "rode-env-action",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A GitHub Action to facilitate testing Rode",
   "main": "src/index.js",
-  "private": true,
-  "scripts": {
-    "build": "esbuild ./src --minify --bundle --outfile=dist/index.js --platform=node --target=node12",
-    "clean": "rm -f dist/index.js"
-  }
+  "private": true
 }

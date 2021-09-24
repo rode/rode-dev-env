@@ -19,6 +19,7 @@ const setOutputs = () => {
 
 module.exports = () => {
     core.info('Running rode-dev-env main');
+
     const services = getServices();
 
     core.info('Starting services');

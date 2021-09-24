@@ -16,19 +16,18 @@ jobs:
       - name: Install Dependencies
         run: yarn install --production
       - name: Build
+        id: build
         run: |
-          yarn clean
-          yarn build
+          ./build.sh
       - name: Commit Bundle & Tag Release
         run: |
           set -eu
           git config --local user.email "rode@liatrio.com"
           git config --local user.name "rode-bot"
 
-          version="v$(jq -r '.version' < package.json)"
-          commitMsg="Release ${version}"
+          commitMsg="Release ${{ steps.build.outputs.version }}"
           git add dist/index.js
           git commit -m "$commitMsg"
 
-          git tag -a "${version}" -m "$commitMsg"
+          git tag -a "${{ steps.build.outputs.version }}" -m "$commitMsg"
           git push --follow-tags
