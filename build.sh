@@ -9,7 +9,7 @@ ACTION_VERSION="v$(jq -r '.version' < package.json)"
 
 echo "Setting version as ${ACTION_VERSION}"
 
-esbuild ./src \
+npx esbuild ./src \
   --bundle \
   --minify \
   --outfile=dist/index.js \
