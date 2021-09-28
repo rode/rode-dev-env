@@ -48,7 +48,7 @@ The action outputs addresses for the running services:
 
 ```yaml
 - name: Start Rode Environment
-  uses: rode/rode-dev-env@v0.1.1
+  uses: rode/rode-dev-env@v0.1.2
   id: rode
 - name: List Rode Policies
   run: |

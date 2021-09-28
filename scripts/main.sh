@@ -4,5 +4,4 @@ set -euo pipefail
 
 source scripts/common.sh
 
-printenv
-#node src/index.js
+node src/index.js
