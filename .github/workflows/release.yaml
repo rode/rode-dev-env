@@ -18,7 +18,7 @@ jobs:
       - name: Build
         id: build
         run: |
-          ./build.sh
+          ./scripts/build.sh
       - name: Commit Bundle & Tag Release
         run: |
           set -eu

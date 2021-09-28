@@ -8,13 +8,18 @@ const defaultServices = [
 
 const getServices = () => {
     const services = [...defaultServices];
-    if (core.getInput('rodeVersion') !== 'local') {
+    if (!isLocalRode()) {
         services.push('rode');
     }
 
     return services;
 };
 
+const isLocalRode = () => {
+    return core.getInput('rodeVersion') === 'local'
+}
+
 module.exports = {
     getServices,
+    isLocalRode,
 }

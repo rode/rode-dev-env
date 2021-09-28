@@ -23,9 +23,10 @@ const ps = () => runDockerCmd({
     cmd: 'ps',
 });
 
-const logs = () => runDockerCmd({
+const logs = (service) => runDockerCmd({
     cmd: 'logs',
-    args: ['--no-color', '--no-log-prefix']
+    log: false,
+    args: ['--no-color', '--no-log-prefix', service]
 });
 
 const composeEnvironment = () => ({
@@ -36,8 +37,6 @@ const composeEnvironment = () => ({
 })
 
 const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
-    core.startGroup(`docker-compose ${cmd}`);
-
     const opts = {
         shell: false,
     };
@@ -57,9 +56,16 @@ const runDockerCmd = ({cmd, args = [], extraEnv, log = true}) => {
 
     try {
         const stdout = execFileSync('docker-compose', execArgs, opts);
-        core.info(stdout);
+        if (log) {
+            core.startGroup(`docker-compose ${cmd}`);
+            core.info(stdout);
+        }
+
+        return stdout;
     } finally {
-        core.endGroup();
+        if (log) {
+            core.endGroup();
+        }
     }
 };
 

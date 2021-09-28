@@ -11,12 +11,14 @@ const ACTION_CHECKOUT_PATH = `/home/runner/work/_actions/rode/${ACTION}`;
 
 const setupDockerCompose = () => {
     if (!process.env.GITHUB_ACTIONS) {
+        core.info("Appear to be running locally")
         return;
     }
 
     // running in the GitHub Actions workflow for the rode/rode-dev-env as a local action
     const runningInRepoCi = path.basename(process.cwd()) === ACTION && fs.existsSync('./docker-compose.yaml');
     if (runningInRepoCi) {
+        core.info("Running in CI and in the rode-dev-env repository")
         return
     }
 
