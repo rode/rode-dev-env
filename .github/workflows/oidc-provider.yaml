@@ -27,7 +27,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: oidc
           push: true
           tags: |
             ghcr.io/rode/rode-dev-env/oidc-provider:latest
