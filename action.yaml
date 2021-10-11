@@ -6,12 +6,16 @@ branding:
   color: green
 
 inputs:
+  authEnabled:
+    description: "Whether Rode should be configured with authentication."
+    required: true
+    default: "false"
   rodeVersion:
     description: "Rode version. Set this value to 'local' to skip initializing Rode."
     required: true
     default: "0.14"
   elasticsearchVersion:
-    description: 'Elasticsearch Docker image tag.'
+    description: "Elasticsearch Docker image tag."
     required: true
     default: "7.10.0"
   grafeasVersion:
@@ -25,13 +29,15 @@ inputs:
 
 outputs:
   rodeHost:
-    description: 'Rode hostname and port. No protocol.'
+    description: "Rode hostname and port. No protocol."
   elasticsearchUrl:
-    description: 'Elasticsearch URL.'
+    description: "Elasticsearch URL."
   grafeasElasticsearchHost:
-    description: 'Grafeas Elasticsearch host and port. No protocol.'
+    description: "Grafeas Elasticsearch host and port. No protocol."
   opaUrl:
-    description: 'Open Policy Agent URL.'
+    description: "Open Policy Agent URL."
+  oidcProviderUrl:
+    description: "OpenID Connect provider URL."
 
 runs:
   using: node12

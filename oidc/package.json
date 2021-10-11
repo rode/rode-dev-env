@@ -1,0 +1,8 @@
+{
+  "name": "rode-oidc-provider",
+  "version": "0.1.0",
+  "main": "index.js",
+  "dependencies": {
+    "oidc-provider": "^7.8.0"
+  }
+}

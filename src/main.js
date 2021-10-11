@@ -6,7 +6,7 @@ const {spawn} = require('child_process');
 
 const core = require('@actions/core');
 const dockerCompose = require('./docker-compose');
-const {getServices, isLocalRode} = require('./services');
+const {getServices, isLocalRode, isAuthEnabled} = require('./services');
 
 const READY_ATTEMPTS = 5;
 const READY_CHECK_INTERVAL = 5000;
@@ -15,6 +15,7 @@ const outputs = {
     'opaUrl': 'http://localhost:8181',
     'elasticsearchUrl': 'http://localhost:9200',
     'grafeasHost': 'localhost:8080',
+    'oidcProviderUrl': 'http://localhost:3000'
 };
 
 const setOutputs = () => {
@@ -37,6 +38,12 @@ const startLocalRode = async (logsDir) => {
         logs.once('open', () => {
             const rodeDir = process.env.GITHUB_WORKSPACE || '.';
             core.info(`Spawning Rode process, sending logs to ${logsPath}`);
+
+            const authEnv = {
+                OIDC_ISSUER: outputs.oidcProviderUrl,
+                OIDC_REQUIRED_AUDIENCE: 'rode',
+                OIDC_TLS_INSECURE_SKIP_VERIFY: 'true',
+            }
             const rode = spawn(path.join(rodeDir, 'rode'), {
                 detached: true,
                 cwd: rodeDir,
@@ -45,6 +52,7 @@ const startLocalRode = async (logsDir) => {
                     GRAFEAS_HOST: outputs.grafeasHost,
                     ELASTICSEARCH_HOST: outputs.elasticsearchUrl,
                     OPA_HOST: outputs.opaUrl,
+                    ...(isAuthEnabled() ? authEnv : {})
                 },
                 stdio: ['ignore', logs, logs]
             });
@@ -72,10 +80,12 @@ const waitForRodeToStart = async () => {
                 return;
             }
         } catch (e) {
-            core.info(`Error waiting for Rode to start (attempt ${i+1}/${READY_ATTEMPTS}): ${e.stack}`);
+            core.info(`Error waiting for Rode to start (attempt ${i + 1}/${READY_ATTEMPTS}): ${e.stack}`);
         }
         await sleep(READY_CHECK_INTERVAL);
     }
+    // remove PID so we don't try to stop Rode in the post step
+    core.saveState('localRodePid', '');
     throw new Error('Timed out waiting for Rode to start');
 };
 

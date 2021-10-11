@@ -8,18 +8,26 @@ const defaultServices = [
 
 const getServices = () => {
     const services = [...defaultServices];
-    if (!isLocalRode()) {
-        services.push('rode');
+
+    if (isAuthEnabled()) {
+        services.push('oidc-provider');
     }
+
+    if (isLocalRode()) {
+        return services;
+    }
+
+    services.push(isAuthEnabled() ? 'rode-with-auth': 'rode');
 
     return services;
 };
 
-const isLocalRode = () => {
-    return core.getInput('rodeVersion') === 'local'
-}
+const isLocalRode = () => core.getInput('rodeVersion') === 'local';
+
+const isAuthEnabled = () => core.getInput('authEnabled') === 'true';
 
 module.exports = {
     getServices,
     isLocalRode,
+    isAuthEnabled,
 }

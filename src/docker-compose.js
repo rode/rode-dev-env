@@ -1,6 +1,8 @@
 const core = require("@actions/core");
 const {execFileSync} = require('child_process');
 
+const {isLocalRode, isAuthEnabled} = require('./services');
+
 let DOCKERFILE_PATH;
 
 const configure = (dockerfile) => {
@@ -30,6 +32,7 @@ const logs = (service) => runDockerCmd({
 });
 
 const composeEnvironment = () => ({
+    ISSUER_URL: isLocalRode() && isAuthEnabled() ? "http://localhost:3000" : "",
     RODE_VERSION: `v${core.getInput('rodeVersion')}`,
     ELASTICSEARCH_VERSION: core.getInput('elasticsearchVersion'),
     GRAFEAS_VERSION: `v${core.getInput('grafeasVersion')}`,

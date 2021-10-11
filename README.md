@@ -8,9 +8,11 @@ A local development and CI environment for Rode and its components.
 
 ## Local
 
-To start Rode, run `docker compose up`. This will stand up Open Policy Agent, Elasticsearch, Grafeas, and Rode.
+To start Rode, run `docker compose up rode`. This will stand up Open Policy Agent, Elasticsearch, Grafeas, and Rode.
 
 To shut everything down, use `docker compose down`.
+
+To use Rode with authentication enabled, run `docker compose up rode-with-auth` instead. 
 
 ## GitHub Action
 
@@ -23,10 +25,11 @@ For debugging, logs from the services are attached to each run:
 
 ### Inputs
 
-The only action inputs are for configuring service versions:
+The only action inputs are for configuring service versions and authentication:
 
 | Input                  | Description                                                         | Default  |
 |------------------------|---------------------------------------------------------------------|----------|
+| `authEnabled`          | Whether Rode should be configured to require authentication.        | `false`  |
 | `rodeVersion`          | Rode version. Set this value to `local` to use a binary in `$PATH`. | `0.14`   |
 | `elasticsearchVersion` | Elasticsearch Docker image tag.                                     | `7.10.0` |
 | `grafeasVersion`       | Grafeas Elasticsearch Docker image tag.                             | `0.8`    |
@@ -42,7 +45,7 @@ The action outputs addresses for the running services:
 | `elasticsearchUrl` | Elasticsearch URL.                                |
 | `grafeasHost`      | Grafeas Elasticsearch host and port. No protocol. |
 | `opaUrl`           | Open Policy Agent URL.                            |
-
+| `oidcProviderUrl`  | OpenID Connect provider URL.                      |
 
 ### Example
 

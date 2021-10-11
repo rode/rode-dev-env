@@ -1,0 +1,34 @@
+name: oidc-provider
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - oidc/**
+      - ./github/workflows/oidc-provider.yaml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.CR_USER }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Create Docker Tag
+        id: tag
+        run: |
+          echo "::set-output name=tag::$(git rev-parse --short HEAD)"
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/rode/rode-dev-env/oidc-provider:latest
+            ghcr.io/rode/rode-dev-env/oidc-provider:${{ steps.tag.outputs.tag }}
