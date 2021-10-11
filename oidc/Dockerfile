@@ -9,6 +9,7 @@ COPY index.js .
 ###
 
 FROM node:${NODE_TAG}
+LABEL org.opencontainers.image.source=https://github.com/rode/rode-dev-env
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app .
 ENTRYPOINT ["node", "index.js"]
