@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - oidc/**
-      - ./github/workflows/oidc-provider.yaml
+      - .github/workflows/oidc-provider.yaml
 
 jobs:
   build:
