@@ -14,6 +14,12 @@ To shut everything down, use `docker compose down`.
 
 To use Rode with authentication enabled, run `docker compose up rode-with-auth` instead. 
 
+To start Rode's dependencies, but not Rode itself, use `docker compose up grafeas opa`. Then you can run Rode locally by
+following the [development instructions](https://github.com/rode/rode/blob/main/docs/development.md#rode-dev-env).
+
+Lastly, to use the identity provider with local Rode, run 
+`ISSUER_URL=http://localhost:3000 docker compose up oidc-provider grafeas opa`.
+
 ## GitHub Action
 
 This repository includes a GitHub Action to run Rode in a CI environment. It handles setting up Rode and its dependencies,
