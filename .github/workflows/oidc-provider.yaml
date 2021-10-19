@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - oidc/**
-      - .github/workflows/oidc-provider.yaml
+      - 'oidc/**'
+      - '.github/workflows/oidc-provider.yaml'
 
 jobs:
   build:
